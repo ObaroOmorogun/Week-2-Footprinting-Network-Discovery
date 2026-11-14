@@ -1,0 +1,76 @@
+# Week 2: Footprinting and Network Discovery
+
+This repository contains a sanitized summary of my Week 2 cybersecurity internship exercises: passive footprinting of an authorized training target and host discovery on a private network using Zenmap.
+
+> **Public-repository note:** This README is written to avoid publishing internal network identifiers, cookie values, or unapproved target details. Do not commit raw screenshots, scan exports, or permission letters to a public repository unless the network owner and instructor have approved publication. Redact local IP addresses, MAC addresses, cookie values, usernames, and other identifying information first.
+
+## Objectives
+
+- Collect publicly available domain and website information using Kali Linux tools.
+- Identify responsive hosts on an authorized private subnet using an Nmap ping scan through Zenmap.
+- Document results, limitations, and appropriate defensive follow-up.
+
+## Scope and authorization
+
+- **Footprinting:** An authorized training domain. The exact domain is omitted here for public sharing; include it only if the owner and instructor permit disclosure.
+- **Network discovery:** A private `/24` subnet belonging to the student or otherwise explicitly authorized for the exercise. Specific addresses and MAC information are withheld from this public summary.
+- The student confirmed authorization for the exercise. Written authorization should define the target, dates, and permitted techniques.
+- The work was limited to information gathering and host discovery. No exploitation, denial-of-service activity, password attacks, or vulnerability validation were performed.
+
+## Tools and commands
+
+| Tool | Example command | Purpose |
+|---|---|---|
+| WHOIS | `whois <authorized-domain>` | Review public registration and name-server details. |
+| WhatWeb | `whatweb <authorized-domain>` | Fingerprint technologies reported by the website. |
+| nslookup | `nslookup <authorized-domain>` | Resolve the domain through DNS. |
+| curl | `curl -I <authorized-domain>` | Inspect the HTTP response headers and redirects. |
+| wafw00f | `wafw00f <authorized-domain>` | Check for a likely web application firewall fingerprint. |
+| DNSRecon | `dnsrecon -d <authorized-domain>` | Query selected DNS records. |
+| Zenmap / Nmap | `nmap -sn <authorized-private-subnet>/24` | Discover responsive hosts without scanning ports. |
+
+Run these commands only within the approved scope. Replace placeholders with the authorized target and subnet; do not copy commands from this README to scan systems without permission.
+
+## Summary of results
+
+### Footprinting
+
+- WHOIS returned registrar, registration-date, and name-server information.
+- WhatWeb identified web-server and application technology fingerprints. These are tool-reported observations and were not independently verified.
+- DNS lookup resolved the training domain to a public IP address; the address is omitted from this public summary.
+- The HTTP request returned a redirect to HTTPS and exposed some technical response headers. Cookie values are intentionally excluded.
+- Wafw00f identified a likely ModSecurity web application firewall fingerprint. This does not establish the effectiveness of its rules.
+- DNSRecon returned an A record but reported a timeout during SOA resolution. Its enumeration should therefore be treated as partial.
+
+### Zenmap host discovery
+
+- The ping scan reported **two hosts up** on the tested private `/24` subnet.
+- The evidence displayed a MAC address for one host; the local IP addresses and MAC are withheld here.
+- The scan used `-sn`, which performs host discovery and does not perform a port scan.
+- The supplied topology export also contained a node from a different address range and a `localhost` entry that were absent from the current scan output. The topology should be regenerated from a clean scan before it is presented as a visualization of the current results.
+
+## Limitations
+
+- Tool fingerprints can be incomplete or inaccurate and do not prove that a component is vulnerable.
+- DNSRecon results were partial because of a timeout.
+- Host discovery confirms that devices responded during the scan; it does not identify their owners or prove that they are unauthorized.
+- The topology export and current scan output were not fully consistent.
+
+## Recommended evidence files
+
+For a public repository, add only instructor-approved, sanitized evidence. For a private class submission, keep the original evidence in the approved submission location.
+
+- Sanitized WHOIS, WhatWeb, nslookup, curl, wafw00f, and DNSRecon screenshots.
+- Sanitized Zenmap scan output screenshot.
+- A clean topology export generated from the current scan only.
+- The final report, after removing personal or session-related information from any embedded evidence.
+
+## Responsible use
+
+Use these techniques only on systems you own or have written permission to assess. Permission to test a system does not automatically grant permission to publish its domain details, scan results, screenshots, or network identifiers. Keep cookie values, credentials, session identifiers, private IP addresses, and MAC addresses out of public commits.
+
+## Author
+
+Obaro Omorogun  
+Cybersecurity Internship — Week 02  
+Assessment evidence date: 14 November 2026
